@@ -5,6 +5,10 @@ on:
 
 jobs:
   auto-format:
+    # pull_request_target runs with base-repo secrets. Only run for branches that live in this
+    # repository (write access required to push them). Never check out or execute a fork's PR head
+    # here: `make` would run the PR's Makefile with PUBLIC_REPO_ACCESS_TOKEN in the environment.
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     container: cloudposse/build-harness:latest
     steps:
